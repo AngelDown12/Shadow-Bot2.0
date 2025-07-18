@@ -146,8 +146,12 @@ let handler = async (m, { conn, usedPrefix: _p, __dirname }) => {
     }
     text = text.replace(new RegExp(`%(${Object.keys(replace).sort((a, b) => b.length - a.length).join`|`})`, 'g'), (_, name) => '' + replace[name])
 
-    let pp = './storage/img/siskedurl.jpg'
-    await conn.sendFile(m.chat, pp, 'thumbnail.jpg', text.trim(), m, null)
+    let pp = 'https://files.catbox.moe/skcpb6.mp4'
+    await conn.sendMessage(m.chat, {
+  video: { url: 'https://files.catbox.moe/skcpb6.mp4' },
+  caption: text.trim(),
+  gifPlayback: true
+}, { quoted: m })
 
   } catch (e) {
     conn.reply(m.chat, 'Lo sentimos, el menú tiene un error.', m)
