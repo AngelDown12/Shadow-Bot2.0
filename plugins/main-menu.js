@@ -1,4 +1,4 @@
-import { promises } from 'fs'
+wimport { promises } from 'fs'
 import { join } from 'path'
 import fetch from 'node-fetch'
 import { xpRange } from '../lib/levelling.js'
@@ -42,10 +42,10 @@ const defaultMenu = {
 
 \t\t\t𝑺 𝑶 𝑭 𝑰 - 𝐌 𝐄 𝐍 𝐔́
 `.trimStart(),
-header: '┣━━━ *〔* *%category* *〕*━━━┫',
-body: '*┃⋗ 🔮* *%cmd*\n',
-footer: '┗━━━━━━━━━━━━━━┛\n',
-after: '',
+  header: '┣━━━ *〔* *%category* *〕*━━━┫',
+  body: '*┃⋗ 🔮* *%cmd*\n',
+  footer: '┗━━━━━━━━━━━━━━┛\n',
+  after: '',
 }
 
 let handler = async (m, { conn, usedPrefix: _p, __dirname }) => {
@@ -134,7 +134,7 @@ let handler = async (m, { conn, usedPrefix: _p, __dirname }) => {
       version: _package.version,
       npmdesc: _package.description,
       npmmain: _package.main,
-      author: _package.author.name,
+      author: _package.author?.name || '',
       license: _package.license,
       exp: exp - min,
       maxexp: xp,
@@ -146,8 +146,12 @@ let handler = async (m, { conn, usedPrefix: _p, __dirname }) => {
     }
     text = text.replace(new RegExp(`%(${Object.keys(replace).sort((a, b) => b.length - a.length).join`|`})`, 'g'), (_, name) => '' + replace[name])
 
-    let pp = './storage/img/siskedurl.jpg'
-    await conn.sendFile(m.chat, pp, 'thumbnail.jpg', text.trim(), m, null)
+    // Enviar el video con el menú
+    await conn.sendMessage(m.chat, {
+      video: { url: 'https://files.catbox.moe/skcpb6.mp4' },
+      caption: text.trim(),
+      gifPlayback: true
+    }, { quoted: m })
 
   } catch (e) {
     conn.reply(m.chat, 'Lo sentimos, el menú tiene un error.', m)
@@ -155,11 +159,11 @@ let handler = async (m, { conn, usedPrefix: _p, __dirname }) => {
   }
 }
 
-handler.customPrefix = /^(menu|menú|ayuda|help)$/i;
-handler.command = new RegExp; // para que funcione sin prefijo
-handler.register = false;
+handler.customPrefix = /^(menu|menú|ayuda|help)$/i
+handler.command = new RegExp // sin prefijo
+handler.register = false
 
-export default handler;
+export default handler
 
 const more = String.fromCharCode(8206)
 const readMore = more.repeat(4001)
@@ -169,4 +173,4 @@ function clockString(ms) {
   let m = isNaN(ms) ? '--' : Math.floor(ms / 60000) % 60
   let s = isNaN(ms) ? '--' : Math.floor(ms / 1000) % 60
   return [h, m, s].map(v => v.toString().padStart(2, 0)).join(':')
-        }
+}
