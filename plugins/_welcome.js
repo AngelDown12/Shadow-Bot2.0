@@ -8,6 +8,8 @@ export async function before(m, { conn, participants, groupMetadata }) {
   if (!chat?.bienvenida) return
 
   let who = m.messageStubParameters?.[0]
+  if (!who) return
+
   let user = `@${who.split('@')[0]}`
   let group = groupMetadata.subject
   let desc = groupMetadata.desc || 'sin descripción'
@@ -25,7 +27,7 @@ export async function before(m, { conn, participants, groupMetadata }) {
   if (m.messageStubType == 27) {
     let text = chat.sWelcome
       ? chat.sWelcome.replace(/@user/g, user).replace(/@group/g, group).replace(/@desc/g, desc)
-      : `┌─★ BUU - 𝑩𝑶𝑻 \n│「 Bienvenido 」\n└┬★ 「 ${user} 」\n   │✑  Bienvenido a\n   │✑  ${group}\n   │✑  Descripción:\n${desc}\n   └───────────────┈ ⳹`
+      : `┌─★ 𝑺𝑶𝑭𝑰 - 𝑩𝑶𝑻 \n│「 Bienvenido 」\n└┬★ 「 ${user} 」\n   │✑  Bienvenido a\n   │✑  ${group}\n   │✑  Descripción:\n${desc}\n   └───────────────┈ ⳹`
 
     if (isVideo) {
       await conn.sendMessage(m.chat, {
@@ -38,11 +40,11 @@ export async function before(m, { conn, participants, groupMetadata }) {
     }
   }
 
-  // =========== SALIDA ===========
+  // =========== SALIDA O EXPULSADO ===========
   if (m.messageStubType == 28 || m.messageStubType == 32) {
     let text = chat.sBye
       ? chat.sBye.replace(/@user/g, user).replace(/@group/g, group).replace(/@desc/g, desc)
-      : `┌─★ BUU - 𝑩𝑶𝑻 \n│「 BAYY 👋 」\n└┬★ 「 ${user} 」\n   │✑  Lárgate\n   │✑  Jamás te quisimos aquí\n   └───────────────┈ ⳹`
+      : `┌─★ 𝑺𝑶𝑭𝑰 - 𝑩𝑶𝑻 \n│「 BAYY 👋 」\n└┬★ 「 ${user} 」\n   │✑  Lárgate\n   │✑  Jamás te quisimos aquí\n   └───────────────┈ ⳹`
 
     if (isVideo) {
       await conn.sendMessage(m.chat, {
