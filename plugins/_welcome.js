@@ -27,7 +27,7 @@ export async function before(m, { conn, participants, groupMetadata }) {
   if (m.messageStubType == 27) {
     let text = chat.sWelcome
       ? chat.sWelcome.replace(/@user/g, user).replace(/@group/g, group).replace(/@desc/g, desc)
-      : `┌─★ 𝑺𝑶𝑭𝑰 - 𝑩𝑶𝑻 \n│「 Bienvenido 」\n└┬★ 「 ${user} 」\n   │✑  Bienvenido a\n   │✑  ${group}\n   │✑  Descripción:\n${desc}\n   └───────────────┈ ⳹`
+      : `┌─★ BUU - 𝑩𝑶𝑻 \n│「 Bienvenido 」\n└┬★ 「 ${user} 」\n   │✑  Bienvenido a\n   │✑  ${group}\n   │✑  Descripción:\n${desc}\n   └───────────────┈ ⳹`
 
     if (isVideo) {
       await conn.sendMessage(m.chat, {
@@ -44,7 +44,7 @@ export async function before(m, { conn, participants, groupMetadata }) {
   if (m.messageStubType == 28 || m.messageStubType == 32) {
     let text = chat.sBye
       ? chat.sBye.replace(/@user/g, user).replace(/@group/g, group).replace(/@desc/g, desc)
-      : `┌─★ 𝑺𝑶𝑭𝑰 - 𝑩𝑶𝑻 \n│「 BAYY 👋 」\n└┬★ 「 ${user} 」\n   │✑  Lárgate\n   │✑  Jamás te quisimos aquí\n   └───────────────┈ ⳹`
+      : `┌─★ BUU - 𝑩𝑶𝑻 \n│「 BAYY 👋 」\n└┬★ 「 ${user} 」\n   │✑  Lárgate\n   │✑  Jamás te quisimos aquí\n   └───────────────┈ ⳹`
 
     if (isVideo) {
       await conn.sendMessage(m.chat, {
