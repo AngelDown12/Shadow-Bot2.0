@@ -31,12 +31,8 @@ const defaultMenu = {
 
 “ hello *%name*, Cómo se encuentra el día de hoy? ”
 
-*╭━〔*  *Info User* *〕*
-*┃➤* *👤 Nombre ∙* %name
-*┃➤* *🍬 Dulces ∙* %limit
-*┃➤* *⭐ XP ∙* %totalexp
-*┃➤* *⚡ Nivel ∙* %level
- ╰━━━━━━
+𝗧𝗶𝗲𝗺𝗽𝗼 𝗔𝗰𝘁𝗶𝘃𝗼:
+
  %readmore
 *~•~•~•~•~•~•~•~•~•~•~•~•~•~•~•~•~*
 
