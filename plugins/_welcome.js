@@ -25,7 +25,7 @@ export async function before(m, { conn, participants, groupMetadata }) {
   let byeText = chat.despMessage || 'Se fue 😹'
 
   if (m.messageStubType === WAMessageStubType.GROUP_PARTICIPANT_ADD) {
-    let text = `┌─★ 𝐂𝐫𝐨𝐰𝐁𝐨𝐭-𝐒𝐓\n│「 Bienvenido 」\n└┬★ 「 ${userTag} 」\n   │💛 ${welcomeText.replace('@user', userTag).replace('@group', groupMetadata.subject)}\n   └───────────────┈ ⳹\n> ${dev}`
+    let text = `┌─★ Buubot-𝐒𝐓\n│「 Bienvenido 」\n└┬★ 「 ${userTag} 」\n   │💛 ${welcomeText.replace('@user', userTag).replace('@group', groupMetadata.subject)}\n   └───────────────┈ ⳹\n> ${dev}`
     if (useVideo) {
       await conn.sendMessage(m.chat, {
         video: { url: videoDefault },
@@ -46,7 +46,7 @@ export async function before(m, { conn, participants, groupMetadata }) {
     m.messageStubType === WAMessageStubType.GROUP_PARTICIPANT_LEAVE ||
     m.messageStubType === 32 // Expulsado por admin
   ) {
-    let text = `┌─★ 𝐂𝐫𝐨𝐰𝐁𝐨𝐭-𝐒𝐓\n│「 ADIOS 👋 」\n└┬★ 「 ${userTag} 」\n   │💛 ${byeText.replace('@user', userTag).replace('@group', groupMetadata.subject)}\n   └───────────────┈ ⳹\n> ${dev}`
+    let text = `┌─★ buubot-𝐒𝐓\n│「 ADIOS 👋 」\n└┬★ 「 ${userTag} 」\n   │💛 ${byeText.replace('@user', userTag).replace('@group', groupMetadata.subject)}\n   └───────────────┈ ⳹\n> ${dev}`
     if (useVideo) {
       await conn.sendMessage(m.chat, {
         video: { url: videoDefault },
