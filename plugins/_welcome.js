@@ -27,7 +27,19 @@ export async function before(m, { conn, participants, groupMetadata }) {
   if (m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_ADD) {
     let text = chat.sWelcome
       ? chat.sWelcome.replace(/@user/g, user).replace(/@group/g, group).replace(/@desc/g, desc)
-      : `┌─★ BUU - 𝑩𝑶𝑻 \n│「 Bienvenido 」\n└┬★ 「 ${user} 」\n   │✑  Bienvenido a\n   │✑  ${group}\n   │✑  Descripción:\n${desc}\n   └───────────────┈ ⳹`
+      :     `┏─────────────────┐
+「 ${taguser} 」
+𝘽𝙄𝙀𝙉𝙑𝙀𝙉𝙄𝘿𝙓 😊
+𝑫𝒊𝒔𝒇𝒓𝒖𝒕𝒂 𝒅𝒆 𝒕𝒖 𝒆𝒔𝒕𝒂𝒅𝒊𝒂 𝒓𝒆𝒄𝒖𝒆𝒓𝒅𝒂 𝒄𝒖𝒎𝒑𝒍𝒊𝒓 𝒍𝒂𝒔 𝒓𝒆𝒈𝒍𝒂𝒔 𝒚 𝒍𝒆𝒆𝒓 l𝒂 𝒅𝒆𝒔𝒄𝒓𝒊𝒑𝒄𝒊𝒐𝒏 ✨
+
+└───── 𝙅𝙊𝙏𝘼 𝘽𝙊𝙏🐼─────┘`,
+    `┏━━━━━━━━━━━━
+┃──〘 *𝗕𝗜𝗘𝗡𝗩𝗘𝗡𝗜𝗗𝗫* 〙───
+┃━━━━━━━━━━━━
+┃ *_🐼 𝗘𝗡𝗧𝗥𝗢   ${taguser}_* 
+┃ *_Un gusto tenerte aqui_*
+┃ *_Disfruta tu estadía 😇_*
+┗━━━𝙅𝙊𝙏𝘼 𝘽𝙊𝙏━━━━`
 
     if (isVideo) {
       await conn.sendMessage(m.chat, {
