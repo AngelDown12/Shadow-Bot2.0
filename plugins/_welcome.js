@@ -4,51 +4,62 @@ import fetch from 'node-fetch'
 export async function before(m, { conn, participants, groupMetadata }) {
   if (!m.messageStubType || !m.isGroup) return true
 
-  const videoUrl = 'https://files.catbox.moe/em05p6.mp4'
-  const defaultImage = 'https://files.catbox.moe/0gel94.jpg'
+  let who = m.messageStubParameters?.[0]
+  if (!who) return
+  let userTag = `@${who.split('@')[0]}`
   let chat = global.db.data.chats[m.chat]
-  let who = m.messageStubParameters[0]
-  let user = `@${who.split`@`[0]}`
-  let groupName = groupMetadata.subject
-  let groupDesc = groupMetadata.desc || 'sin descripción'
-  let dev = 'By: Shadow 🍷'
-  let estilo = {} // si usas quoted
+  let dev = '𝑺𝒐𝒇𝒊-𝑩𝒐𝒕'
+  let videoDefault = 'https://files.catbox.moe/skcpb6.mp4'
 
-  // FOTO DE PERFIL
-  let hasProfile = false
-  let media
+  if (!chat?.welcome) return
+
+  let img, useVideo = false
   try {
     let pp = await conn.profilePictureUrl(who, 'image')
-    media = await (await fetch(pp)).buffer()
-    hasProfile = true
+    img = await (await fetch(pp)).buffer()
   } catch {
-    hasProfile = false
+    useVideo = true
   }
 
-  // BIENVENIDA
-  if (chat.bienvenida && m.messageStubType === WAMessageStubType.GROUP_PARTICIPANT_ADD) {
-    let welcomeMsg = `┌─★ 𝙎𝙃𝘼𝘿𝙊𝙒 𝘽𝙊𝙏 🍷\n│「 Bienvenido 」\n└┬★ 「 ${user} 」\n   │💛 ${chat.welcomeMessage || 'Bienvenido/a :'}\n   │💛 ${groupName}\n   └───────────────┈ ⳹\n> ${dev}`
+  let welcomeText = chat.welcomeMessage || 'Bienvenido/a :'
+  let byeText = chat.despMessage || 'Se fue 😹'
 
-    await conn.sendMessage(m.chat, {
-      ...(hasProfile
-        ? { image: media }
-        : { video: { url: videoUrl }, gifPlayback: true }),
-      caption: welcomeMsg,
-      mentions: [who]
-    }, { quoted: estilo })
+  if (m.messageStubType === WAMessageStubType.GROUP_PARTICIPANT_ADD) {
+    let text = `┌─★ 𝐂𝐫𝐨𝐰𝐁𝐨𝐭-𝐒𝐓\n│「 Bienvenido 」\n└┬★ 「 ${userTag} 」\n   │💛 ${welcomeText.replace('@user', userTag).replace('@group', groupMetadata.subject)}\n   └───────────────┈ ⳹\n> ${dev}`
+    if (useVideo) {
+      await conn.sendMessage(m.chat, {
+        video: { url: videoDefault },
+        caption: text,
+        mentions: [who]
+      }, { quoted: estilo })
+    } else {
+      await conn.sendMessage(m.chat, {
+        image: img,
+        caption: text,
+        mentions: [who]
+      }, { quoted: estilo })
+    }
   }
 
-  // DESPEDIDA
-  if (chat.bienvenida && (m.messageStubType === WAMessageStubType.GROUP_PARTICIPANT_REMOVE || m.messageStubType === WAMessageStubType.GROUP_PARTICIPANT_LEAVE)) {
-    let byeMsg = `┌─★ 𝙎𝙃𝘼𝘿𝙊𝙒 𝘽𝙊𝙏 🍷\n│「 ADIOS 👋 」\n└┬★ 「 ${user} 」\n   │💛 ${chat.despMessage || 'Se Fue😹'}\n   │💛 Jamás te quisimos aquí\n   └───────────────┈ ⳹\n> ${dev}`
-
-    await conn.sendMessage(m.chat, {
-      ...(hasProfile
-        ? { image: media }
-        : { video: { url: videoUrl }, gifPlayback: true }),
-      caption: byeMsg,
-      mentions: [who]
-    }, { quoted: estilo })
+  if (
+    m.messageStubType === WAMessageStubType.GROUP_PARTICIPANT_REMOVE ||
+    m.messageStubType === WAMessageStubType.GROUP_PARTICIPANT_LEAVE ||
+    m.messageStubType === 32 // Expulsado por admin
+  ) {
+    let text = `┌─★ 𝐂𝐫𝐨𝐰𝐁𝐨𝐭-𝐒𝐓\n│「 ADIOS 👋 」\n└┬★ 「 ${userTag} 」\n   │💛 ${byeText.replace('@user', userTag).replace('@group', groupMetadata.subject)}\n   └───────────────┈ ⳹\n> ${dev}`
+    if (useVideo) {
+      await conn.sendMessage(m.chat, {
+        video: { url: videoDefault },
+        caption: text,
+        mentions: [who]
+      }, { quoted: estilo })
+    } else {
+      await conn.sendMessage(m.chat, {
+        image: img,
+        caption: text,
+        mentions: [who]
+      }, { quoted: estilo })
+    }
   }
 
   return true
