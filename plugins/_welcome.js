@@ -1,1 +1,57 @@
-//xd
+import { WAMessageStubType } from '@whiskeysockets/baileys'
+import fetch from 'node-fetch'
+
+export async function before(m, { conn, participants, groupMetadata }) {
+  if (!m.messageStubType || !m.isGroup) return true
+
+  let chat = global.db.data.chats[m.chat]
+  if (!chat?.bienvenida) return
+
+  let who = m.messageStubParameters?.[0]
+  let user = `@${who.split('@')[0]}`
+  let group = groupMetadata.subject
+  let desc = groupMetadata.desc || 'sin descripción'
+  const videoDefault = 'https://files.catbox.moe/skcpb6.mp4'
+
+  let img, isVideo = false
+  try {
+    let pp = await conn.profilePictureUrl(who, 'image')
+    img = await (await fetch(pp)).buffer()
+  } catch {
+    isVideo = true
+  }
+
+  // =========== ENTRADA ===========
+  if (m.messageStubType == 27) {
+    let text = chat.sWelcome
+      ? chat.sWelcome.replace(/@user/g, user).replace(/@group/g, group).replace(/@desc/g, desc)
+      : `┌─★ BUU - 𝑩𝑶𝑻 \n│「 Bienvenido 」\n└┬★ 「 ${user} 」\n   │✑  Bienvenido a\n   │✑  ${group}\n   │✑  Descripción:\n${desc}\n   └───────────────┈ ⳹`
+
+    if (isVideo) {
+      await conn.sendMessage(m.chat, {
+        video: { url: videoDefault },
+        caption: text,
+        mentions: [who]
+      })
+    } else {
+      await conn.sendAi(m.chat, botname, textbot, text, img, img, canal)
+    }
+  }
+
+  // =========== SALIDA ===========
+  if (m.messageStubType == 28 || m.messageStubType == 32) {
+    let text = chat.sBye
+      ? chat.sBye.replace(/@user/g, user).replace(/@group/g, group).replace(/@desc/g, desc)
+      : `┌─★ BUU - 𝑩𝑶𝑻 \n│「 BAYY 👋 」\n└┬★ 「 ${user} 」\n   │✑  Lárgate\n   │✑  Jamás te quisimos aquí\n   └───────────────┈ ⳹`
+
+    if (isVideo) {
+      await conn.sendMessage(m.chat, {
+        video: { url: videoDefault },
+        caption: text,
+        mentions: [who]
+      })
+    } else {
+      await conn.sendAi(m.chat, botname, textbot, text, img, img, canal)
+    }
+  }
+}
