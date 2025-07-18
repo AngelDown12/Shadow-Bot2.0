@@ -11,7 +11,7 @@ export async function before(m, { conn, participants, groupMetadata }) {
   const groupName = groupMetadata.subject
   const groupDesc = groupMetadata.desc || 'sin descripción'
 
-  // Bienvenida
+  // ─── 🎉 BIENVENIDA ───
   if (chat.bienvenida && m.messageStubType == 27) {
     const msgsWelcome = [
       `┏─────────────────┐
@@ -25,20 +25,21 @@ export async function before(m, { conn, participants, groupMetadata }) {
 ┃ *_🐼 𝗘𝗡𝗧𝗥𝗢   ${user}_* 
 ┃ *_Un gusto tenerte aqui_*
 ┃ *_Disfruta tu estadía 😇_*
-┗━━━BUU 𝘽𝙊𝙏━━━━`
+┗━━━BUJ 𝘽𝙊𝙏━━━━`
     ]
 
     let welcome = chat.sWelcome
-      ? chat.sWelcome
-        .replace(/@user/g, user)
-        .replace(/@group/g, groupName)
-        .replace(/@desc/g, groupDesc)
+      ? chat.sWelcome.replace(/@user/g, user).replace(/@group/g, groupName).replace(/@desc/g, groupDesc)
       : msgsWelcome[Math.floor(Math.random() * msgsWelcome.length)]
 
-    await conn.sendAi(m.chat, '𝑺𝑶𝑭𝑰 - 𝑩𝑶𝑻', 'Bienvenida ✨', welcome, video, video, canal)
+    await conn.sendMessage(m.chat, {
+      video: { url: video },
+      caption: welcome,
+      mentions: [who]
+    }, { quoted: m })
   }
 
-  // Despedida y expulsado (usan mismos mensajes)
+  // ─── 👋 DESPEDIDA o EXPULSIÓN ───
   if (chat.bienvenida && (m.messageStubType == 28 || m.messageStubType == 32)) {
     const msgsBye = [
       `*╭┈┈┈┈┈┈┈┈┈┈┈┈┈≫*
@@ -64,12 +65,13 @@ export async function before(m, { conn, participants, groupMetadata }) {
     ]
 
     let bye = chat.sBye
-      ? chat.sBye
-        .replace(/@user/g, user)
-        .replace(/@group/g, groupName)
-        .replace(/@desc/g, groupDesc)
+      ? chat.sBye.replace(/@user/g, user).replace(/@group/g, groupName).replace(/@desc/g, groupDesc)
       : msgsBye[Math.floor(Math.random() * msgsBye.length)]
 
-    await conn.sendAi(m.chat, '𝑺𝑶𝑭𝑰 - 𝑩𝑶𝑻', 'Despedida 👋', bye, video, video, canal)
+    await conn.sendMessage(m.chat, {
+      video: { url: video },
+      caption: bye,
+      mentions: [who]
+    }, { quoted: m })
   }
 }
